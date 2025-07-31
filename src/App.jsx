@@ -9,7 +9,7 @@ function App() {
     const fetchBlogs = async () => {
       setLoading(true);
       try {
-        const response = await fetch('https://blogbackend-d377.onrender.com/post');
+        const response = await fetch('http://localhost:3001/post');
         const data = await response.json();
         setHoldBlogs(data);
       } catch (error) {
