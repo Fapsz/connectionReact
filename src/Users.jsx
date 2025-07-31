@@ -9,7 +9,7 @@ function Users() {
            const fetchUsers = async () => {
              setLoading(true);
              try {
-               const response = await fetch('https://blogbackend-d377.onrender.com/user');
+               const response = await fetch('http://localhost:3001/user');
                const data = await response.json();
                setHoldUsers(data);
              } catch (error) {
